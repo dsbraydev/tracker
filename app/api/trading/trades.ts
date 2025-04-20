@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import supabase from '../client'
+import { useDeleteTradeImage } from './image'
+const BUCKET_NAME = "trade-images"
 
 export interface Trade {
   id: string
@@ -86,14 +88,28 @@ export const useUpdateTrade = () => {
 // 📌 Delete a trade
 export const useDeleteTrade = () => {
   const queryClient = useQueryClient()
+  const deleteImage = useDeleteTradeImage()
+
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('trades').delete().eq('id', id)
+    mutationFn: async (trade: { id: string; image_url?: string }) => {
+      // Extract file path from URL if present
+      if (trade.image_url) {
+        const path = new URL(trade.image_url).pathname
+        const filePath = decodeURIComponent(path.replace(`/storage/v1/object/public/${BUCKET_NAME}/`, ""))
+        await deleteImage.mutateAsync(filePath)
+      }
+
+      // Delete trade
+      const { error } = await supabase
+        .from("trades")
+        .delete()
+        .eq("id", trade.id)
+
       if (error) throw error
-      return id
+      return trade.id
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['trades'] })
+      queryClient.invalidateQueries({ queryKey: ["trades"] })
     }
   })
 }
