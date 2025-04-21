@@ -1,5 +1,4 @@
-import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -12,9 +11,10 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
-const geistSans = Geist({
+const montserrat = Montserrat({
   display: "swap",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"], // you can customize this as needed
 });
 
 export default function RootLayout({
@@ -23,18 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={geistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="min-h-screen flex flex-col items-center">
-            {children}
-          </main>
-        </ThemeProvider>
+    <html lang="en" className={montserrat.className} suppressHydrationWarning>
+      <body className="bg-background text-orange">
+        <main className="min-h-screen">{children}</main>
       </body>
     </html>
   );

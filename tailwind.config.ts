@@ -19,10 +19,15 @@ const config = {
     },
     extend: {
       colors: {
+        white: "#ffffff",
+        orange: "#f96302",
+        dark: "#252525",
+        dark2: "#141414",
+        //
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
+        background: "#252525",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
