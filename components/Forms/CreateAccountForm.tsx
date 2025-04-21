@@ -1,29 +1,93 @@
-import { X } from "lucide-react";
-interface CreateAccountFormProps {
-  isActive: boolean;
-  close: () => void;
+"use client";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SelectDropdown } from "../SelectDropdown";
+import { LoaderCircle, X } from "lucide-react";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { useCreateAccount } from "@/app/api/trading/accounts";
+
+const OPTIONS = [
+  "AquaFunded",
+  "GoatFunded",
+  "FundedNext",
+  "MavenTrading",
+  "SureLeverageFunding",
+];
+
+interface SheetDemoProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export default function CreateAccountForm({
-  isActive,
-  close,
-}: CreateAccountFormProps) {
+export function CreateAccountForm({ open, onOpenChange }: SheetDemoProps) {
+  const [selectedCompany, setSelectedCompany] = useState<string>("");
+  const [capital, setCapital] = useState<number | "">("");
+  const { mutate, isPending, isError, isSuccess } = useCreateAccount();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutate({
+      company: selectedCompany,
+      capital: Number(capital),
+      balance: Number(capital),
+    });
+    if (isSuccess) {
+      onOpenChange(false);
+    }
+  };
+
   return (
-    <div
-      className={`
-          fixed top-0 right-0 h-screen w-[30vw] bg-dark2 shadow-lg z-50 transition-transform duration-300 border-l-[1px] border-orange
-          ${isActive ? "translate-x-0" : "translate-x-full"}
-        `}
-    >
-      <div className="p-4 flex justify-between items-center w-full">
-        <h1 className="text-xl font-semibold">Create Account</h1>
-        <div
-          className=" cursor-pointer hover:opacity-70 duration-500"
-          onClick={close}
-        >
-          <X fill="text-orange" />
-        </div>
-      </div>
-    </div>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="min-w-[35vw] [&>button]:hidden border-orange">
+        <SheetHeader className="flex items-center justify-between flex-row">
+          <SheetTitle className="text-white">Create Account</SheetTitle>
+          <SheetClose
+            asChild
+            className="cursor-pointer hover:opacity-70 duration-500"
+          >
+            <X className="!m-0 block" />
+          </SheetClose>
+        </SheetHeader>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+          <SelectDropdown
+            options={OPTIONS}
+            value={selectedCompany}
+            onChange={setSelectedCompany}
+          />
+
+          <div>
+            <Label className="text-white">Capital</Label>
+            <Input
+              type="number"
+              placeholder="Capital"
+              value={capital}
+              onChange={(e) => {
+                const val = e.target.value;
+                setCapital(val === "" ? "" : Number(val));
+              }}
+              className="no-spinner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
+          </div>
+
+          <Button type="submit" disabled={isPending}>
+            {isPending ? (
+              <LoaderCircle className="animate-spin w-4 h-4 text-orange" />
+            ) : (
+              "Create Account"
+            )}
+          </Button>
+          {isError ? "Something went wrong" : null}
+        </form>
+      </SheetContent>
+    </Sheet>
   );
 }

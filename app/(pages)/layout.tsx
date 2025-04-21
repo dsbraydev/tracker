@@ -3,17 +3,18 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import QueryProvider from "../api/QueryProvider";
 import Navbar from "@/components/dashboard/Navbar";
 import { useState } from "react";
-import CreateAccountForm from "@/components/Forms/CreateAccountForm";
+import { CreateAccountForm } from "@/components/Forms/CreateAccountForm";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isCreateAccountActive, setIsCreateAccountActive] = useState(false);
 
-  const handleAccountCreate = () =>
-    setIsCreateAccountActive(!isCreateAccountActive);
+  const handleAccountCreate = () => setIsCreateAccountActive(true); // set to true to open the sheet
+
   return (
     <QueryProvider>
       <CreateAccountForm
-        isActive={isCreateAccountActive}
-        close={handleAccountCreate}
+        open={isCreateAccountActive}
+        onOpenChange={setIsCreateAccountActive}
       />
       <Navbar />
       <div className="flex h-[calc(100vh-64px)]">
