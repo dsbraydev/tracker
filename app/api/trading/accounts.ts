@@ -9,13 +9,14 @@ export const useAccounts = () => {
       const { data, error } = await supabase
         .from('accounts')
         .select('*')
-        .order('created_at', { ascending: false })
+        .order('capital', { ascending: true }) // Sort by capital (lowest first)
 
       if (error) throw error
       return data
     }
   })
 }
+
 
 // 📌 Create a new account
 export const useCreateAccount = () => {
@@ -90,3 +91,20 @@ export const useDeleteAccount = () => {
     }
   })
 }
+
+export const useAccount = (id?: string) => {
+  return useQuery({
+    queryKey: ["account", id],
+    enabled: !!id, // only runs if id is truthy
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("accounts")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+  });
+};
