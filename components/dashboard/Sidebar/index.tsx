@@ -3,13 +3,10 @@ import { useAccounts } from "@/app/api/trading/accounts";
 import { formatCurrency } from "@/helpers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FunctionalButton } from "@/components/Buttons/FunctionalButton";
+import { FormWrapper } from "@/components/Forms/FormWrapper";
+import { CreateAccountForm } from "@/components/Forms/CreateAccountForm";
 
-interface SidebarProps {
-  handleAccountCreate: () => void;
-}
-
-export default function Sidebar({ handleAccountCreate }: SidebarProps) {
+export default function Sidebar() {
   const { data } = useAccounts();
   const pathname = usePathname();
 
@@ -35,8 +32,10 @@ export default function Sidebar({ handleAccountCreate }: SidebarProps) {
           </Link>
         );
       })}
-      <div className="flex justify-center mt-8 mb-4">
-        <FunctionalButton text="Create Account" cta={handleAccountCreate} />
+      <div className="mt-6 flex justify-center">
+        <FormWrapper header="Create New Account" buttonText="Create New">
+          {(closeSheet) => <CreateAccountForm closeSheet={closeSheet} />}
+        </FormWrapper>
       </div>
     </div>
   );
