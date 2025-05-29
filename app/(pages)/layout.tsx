@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Navbar />
       <div className="flex h-[calc(100vh-64px)]">
         <Sidebar />
-        <div className="p-4">{children}</div>
+        <div className="p-4 w-full">{children}</div>
       </div>
     </QueryProvider>
   );

@@ -1,6 +1,7 @@
 import {
   AlertDialog,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -14,6 +15,7 @@ export function Loader() {
           <AlertDialogTitle className="block mx-auto">
             <LoaderCircle className="animate-spin w-8 h-8" />
           </AlertDialogTitle>
+          <AlertDialogDescription className="hidden"></AlertDialogDescription>
         </AlertDialogHeader>
       </AlertDialogContent>
     </AlertDialog>

@@ -4,6 +4,7 @@ import {
   Sheet,
   SheetContent,
   SheetHeader,
+  SheetDescription,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -26,7 +27,8 @@ export function FormWrapper({ children, buttonText, header }: FormProps) {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>{header}</SheetTitle>
+          <SheetTitle className="text-white">{header}</SheetTitle>
+          <SheetDescription className="hidden"></SheetDescription>
         </SheetHeader>
         {children(closeSheet)}
       </SheetContent>

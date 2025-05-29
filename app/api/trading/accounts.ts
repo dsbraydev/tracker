@@ -48,27 +48,28 @@ export const useUpdateAccount = () => {
   return useMutation({
     mutationFn: async ({
       id,
-      updates
+      updates,
     }: {
-      id: string
+      id: string;
       updates: Partial<{
-        company: string
-        capital: number
-        balance: number
-      }>
+        company: string;
+        capital: number;
+        balance: number;
+      }>;
     }) => {
+      const cleanedUpdates = Object.fromEntries(
+        Object.entries(updates).filter(([_, value]) => value !== undefined)
+      );
+    
       const { data, error } = await supabase
-        .from('accounts')
-        .update(updates)
-        .eq('id', id)
+        .from("accounts")
+        .update(cleanedUpdates)
+        .eq("id", id)
         .select()
-        .single()
-
-      if (error) throw error
-      return data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['accounts'] })
+        .single();
+    
+      if (error) throw error;
+      return data;
     }
   })
 }
