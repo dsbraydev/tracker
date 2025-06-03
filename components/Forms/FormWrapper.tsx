@@ -25,7 +25,7 @@ export function FormWrapper({ children, buttonText, header }: FormProps) {
       <SheetTrigger asChild>
         <Button variant="outline">{buttonText}</Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="h-screen max-h-screen overflow-y-auto scrollbar-hide">
         <SheetHeader>
           <SheetTitle className="text-white">{header}</SheetTitle>
           <SheetDescription className="hidden"></SheetDescription>

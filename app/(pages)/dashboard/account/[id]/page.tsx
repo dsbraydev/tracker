@@ -87,7 +87,7 @@ export default function Account() {
           <ConfirmPopup handelDeleteAccount={handleDeleteAccount} />
         </div>
       </div>
-      <TradeGroup trades={trades} isLoading={isLoadingTrades} />
+      <TradeGroup trades={trades} isLoading={isLoadingTrades} accountId={id} />
     </div>
   );
 }
